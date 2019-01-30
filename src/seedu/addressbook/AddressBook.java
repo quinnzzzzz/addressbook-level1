@@ -67,6 +67,7 @@ public class AddressBook {
      */
     private static final String MESSAGE_ADDED = "New person added: %1$s, Phone: %2$s, Email: %3$s";
     private static final String MESSAGE_ADDRESSBOOK_CLEARED = "Address book has been cleared!";
+    private static final String MESSAGE_ADDRESSBOOK_CLEAR_WARNING = "Are you sure you want to clear the entire Address book? YES to continue";
     private static final String MESSAGE_COMMAND_HELP = "%1$s: %2$s";
     private static final String MESSAGE_COMMAND_HELP_PARAMETERS = "\tParameters: %1$s";
     private static final String MESSAGE_COMMAND_HELP_EXAMPLE = "\tExample: %1$s";
@@ -74,6 +75,7 @@ public class AddressBook {
     private static final String MESSAGE_DISPLAY_PERSON_DATA = "%1$s  Phone Number: %2$s  Email: %3$s";
     private static final String MESSAGE_DISPLAY_LIST_ELEMENT_INDEX = "%1$d. ";
     private static final String MESSAGE_GOODBYE = "Exiting Address Book... Good bye!";
+    private static final String MESSAGE_INVALID_RESPONSE = "You have entered an invalid response";
     private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format: %1$s " + LS + "%2$s";
     private static final String MESSAGE_INVALID_FILE = "The given file name [%1$s] is not a valid file name!";
     private static final String MESSAGE_INVALID_PROGRAM_ARGS = "Too many parameters! Correct program argument format:"
@@ -563,11 +565,21 @@ public class AddressBook {
      *
      * @return feedback display message for the operation result
      */
-    private static String executeClearAddressBook() {
-        clearAddressBook();
-        return MESSAGE_ADDRESSBOOK_CLEARED;
-    }
+    //Add in clear addressbook warning prompt
 
+    private static String executeClearAddressBook() {
+        showToUser(MESSAGE_ADDRESSBOOK_CLEAR_WARNING);
+        String userOption = SCANNER.nextLine();
+        if (userOption.equals("YES")){
+            clearAddressBook();
+            showToUser(MESSAGE_ADDRESSBOOK_CLEARED);
+            exitProgram();
+        }
+        else{
+            showToUser(MESSAGE_INVALID_RESPONSE);
+        }
+        return MESSAGE_GOODBYE;
+    }
     /**
      * Displays all persons in the address book to the user; in added order.
      *
